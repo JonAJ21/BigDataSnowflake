@@ -255,8 +255,8 @@ store_map AS (
     FROM dim_store
 ),
 product_map AS (
-    SELECT DISTINCT ON (name, price, category)
-        id, name, price, category
+    SELECT DISTINCT ON (name, price, category, release_date, expiry_date)
+        id, name, price, category, release_date, expiry_date
     FROM dim_product
 )
 INSERT INTO fact_sales (
@@ -285,6 +285,8 @@ JOIN product_map pm
     ON m.product_name = pm.name
     AND m.product_price = pm.price
     AND m.product_category = pm.category
+    AND m.product_release_date = pm.release_date
+    AND m.product_expiry_date = pm.expiry_date
 JOIN store_map stm
     ON m.store_name = stm.name
     AND m.store_email = stm.email;
